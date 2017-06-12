@@ -22,7 +22,7 @@ Public Class Form1
         download.ReportProgress(25, "Downloading master.zip from github")
 
         ' The DownloadFile() method downloads the Web resource and saves it into the current file-system folder.
-        myWebClient.DownloadFile(myStringWebResource, fileName)
+        myWebClient.DownloadFile(myStringWebResource, Application.StartupPath & "\master.zip")
 
         download.ReportProgress(50, "Unzipping")
 
