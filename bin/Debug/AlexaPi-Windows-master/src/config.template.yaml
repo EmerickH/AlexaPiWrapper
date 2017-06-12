@@ -1,0 +1,74 @@
+# Level of log output
+# default: INFO
+# set to DEBUG for verbose logging
+logging: INFO
+
+sound:
+  # Name of your audio device
+  # leave empty for default
+  # to get the exact name of your device, put "list" here and start debug.bat 
+  input_device: ""
+
+  # Only vlc is supported at this time
+  playback_handler: "vlc"
+
+  # if left empty, won't be passed to the underlying library / command if it supports it
+  # if it doesn't 100% will be used
+  default_volume: 80
+
+  # Means the same as above, but is used for media (playing music for example)
+  # Leave blank to use the same setting as for speech content
+  media_default_volume:
+
+  # NOT USED, ONLY WORKING WITH SOX
+  playback_padding: 0
+
+# Amazon Alexa settings
+alexa:
+  Client_ID: ""
+  Client_Secret: ""
+  Device_Type_ID: ""
+  Security_Profile_Description: ""
+  Security_Profile_ID: ""
+  refresh_token: 
+
+# See https://github.com/alexa-pi/AlexaPi/wiki/Triggers for the description of these options
+# Only pocketsphinx is supported at this time
+triggers:
+  pocketsphinx:
+    enabled: true
+    voice_confirm: true
+
+    phrase: "alexa"
+    threshold: 1e-10
+
+# Commands to run before and after an interaction begins. Leave empty to disable.
+event_commands:
+
+  # Example used to lower shairport-sync volume during interaction with alexa
+  #     startup: "amixer set shairportvolume 100%"
+  #     pre_interaction: "amixer set shairportvolume 10%-""
+  #     post_interaction: "amixer set shairportvolume 10%+""
+  # Note this assumes you have redirected shairport-syncs audio to a seperate softdevice
+  # with control "shairportvolume". Example asound.conf avalible in the scripts folder
+
+  # Command to run at the start of AlexaPi
+  startup: ""
+
+  # Command to run after a trigger is detected but before an interaction begins
+  pre_interaction: ""
+
+  # Command to run after the interaction has completed
+  post_interaction: ""
+
+  # Command to run during a clean shutdown of AlexaPi
+  shutdown: ""
+
+platform:
+  # ONLY DUMMY SUPPORTED
+  device: "dummy"
+
+platforms:
+  common:
+
+  dummy:

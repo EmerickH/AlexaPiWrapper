@@ -1,0 +1,12 @@
+c:\users\emerick\documents\visual studio 2017\Projects\AlexaPiWrapper\AlexaPiWrapper\bin\Debug\AlexaPiWrapper.exe.config
+c:\users\emerick\documents\visual studio 2017\Projects\AlexaPiWrapper\AlexaPiWrapper\bin\Debug\AlexaPiWrapper.exe
+c:\users\emerick\documents\visual studio 2017\Projects\AlexaPiWrapper\AlexaPiWrapper\bin\Debug\AlexaPiWrapper.pdb
+c:\users\emerick\documents\visual studio 2017\Projects\AlexaPiWrapper\AlexaPiWrapper\bin\Debug\AlexaPiWrapper.xml
+c:\users\emerick\documents\visual studio 2017\Projects\AlexaPiWrapper\AlexaPiWrapper\obj\Debug\AlexaPiWrapper.Resources.resources
+c:\users\emerick\documents\visual studio 2017\Projects\AlexaPiWrapper\AlexaPiWrapper\obj\Debug\AlexaPiWrapper.vbproj.GenerateResource.Cache
+c:\users\emerick\documents\visual studio 2017\Projects\AlexaPiWrapper\AlexaPiWrapper\obj\Debug\AlexaPiWrapper.exe
+c:\users\emerick\documents\visual studio 2017\Projects\AlexaPiWrapper\AlexaPiWrapper\obj\Debug\AlexaPiWrapper.xml
+c:\users\emerick\documents\visual studio 2017\Projects\AlexaPiWrapper\AlexaPiWrapper\obj\Debug\AlexaPiWrapper.pdb
+c:\users\emerick\documents\visual studio 2017\Projects\AlexaPiWrapper\AlexaPiWrapper\obj\Debug\AlexaPiWrapper.MDIParent1.resources
+c:\users\emerick\documents\visual studio 2017\Projects\AlexaPiWrapper\AlexaPiWrapper\obj\Debug\AlexaPiWrapper.vbprojResolveAssemblyReference.cache
+c:\users\emerick\documents\visual studio 2017\Projects\AlexaPiWrapper\AlexaPiWrapper\obj\Debug\AlexaPiWrapper.Form1.resources

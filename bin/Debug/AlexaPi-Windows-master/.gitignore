@@ -1,0 +1,11 @@
+*__pycache__*
+*.pyc
+
+src/config.yaml
+src/config-ma.yaml
+
+.idea
+*.sw?
+
+# Mac stuff
+*DS_Store
