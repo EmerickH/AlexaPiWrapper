@@ -7,6 +7,12 @@ Imports System.IO
 
 Module Module1
 
+    Public Const name = "AlexaPi-dev"
+    Public Const url = "https://github.com/alexa-pi/AlexaPi/archive/"
+    Public Const file = "dev.zip"
+    Public Const swigurl = "https://github.com/EmerickH/swigwin-AlexaPi/archive/"
+    Public Const swigfile = "master.zip"
+
     <DllImport("kernel32.dll")>
     Private Function GetConsoleWindow() As IntPtr
     End Function
@@ -66,7 +72,7 @@ Module Module1
         icon.Visible = True
         icon.ShowBalloonTip(1000)
 
-        If Directory.Exists(Application.StartupPath & "\AlexaPi-Windows-master") Then
+        If Directory.Exists(Application.StartupPath & "\" & name) Then
             back.RunWorkerAsync()
 
             window.Show()
@@ -93,7 +99,7 @@ Module Module1
 
     Private Sub back_DoWork(sender As Object, e As DoWorkEventArgs) Handles back.DoWork
         Dim command = "python main.py -d"
-        Dim folder = Application.StartupPath & "\AlexaPi-Windows-master\src\"
+        Dim folder = Application.StartupPath & "\" & name & "\src\"
 
         Dim exitCode As Integer
         Dim ProcessInfo As ProcessStartInfo

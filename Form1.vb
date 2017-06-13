@@ -11,32 +11,37 @@ Public Class Form1
     End Sub
 
     Private Sub download_DoWork(sender As Object, e As DoWorkEventArgs) Handles download.DoWork
-        Dim remoteUri As String = "https://github.com/alexa-pi/AlexaPi-Windows/archive/"
-        Dim fileName As String = "master.zip"
-        Dim myStringWebResource As String = Nothing
-        ' Create a new WebClient instance.
+
         Dim myWebClient As New WebClient()
-        ' Concatenate the domain with the Web resource filename. Because DownloadFile 
-        'requires a fully qualified resource name, concatenate the domain with the Web resource file name.
-        myStringWebResource = remoteUri + fileName
-        download.ReportProgress(25, "Downloading master.zip from github")
 
-        ' The DownloadFile() method downloads the Web resource and saves it into the current file-system folder.
-        myWebClient.DownloadFile(myStringWebResource, Application.StartupPath & "\master.zip")
+        Dim myStringWebResource = url + file
+        download.ReportProgress(15, "Downloading AlexaPi (" & file & ") from github")
+        myWebClient.DownloadFile(myStringWebResource, Application.StartupPath & "\alexapi.zip")
 
-        download.ReportProgress(50, "Unzipping")
 
-        ZipFile.ExtractToDirectory(Application.StartupPath & "\master.zip", Application.StartupPath)
+
+        myStringWebResource = swigurl + swigfile
+        download.ReportProgress(30, "Downloading swigwin-AlexaPi (" & swigfile & ") from github")
+        myWebClient.DownloadFile(myStringWebResource, Application.StartupPath & "\swig.zip")
+
+
+        download.ReportProgress(45, "Unzipping AlexaPi")
+        ZipFile.ExtractToDirectory(Application.StartupPath & "\alexapi.zip", Application.StartupPath)
+
+
+        download.ReportProgress(60, "Unzipping swigwin-AlexaPi")
+        ZipFile.ExtractToDirectory(Application.StartupPath & "\swig.zip", Application.StartupPath & "\" & Module1.name & "\src\scripts\")
+
 
         download.ReportProgress(75, "Installing")
 
-        Dim folderinfo As New ProcessStartInfo("explorer.exe", """" & Application.StartupPath & "\AlexaPi-Windows-master\src""")
+        Dim folderinfo As New ProcessStartInfo("explorer.exe", """" & Application.StartupPath & "\" & Module1.name & "\src""")
 
         Process.Start(folderinfo)
 
         Thread.Sleep(1000)
 
-        Dim startinfo As New ProcessStartInfo("cmd.exe", "/c """ & Application.StartupPath & "\AlexaPi-Windows-master\src\scripts\setup.bat""")
+        Dim startinfo As New ProcessStartInfo("cmd.exe", "/c """ & Application.StartupPath & "\" & Module1.name & "\src\scripts\setup.bat""")
 
         Dim pr = Process.Start(startinfo)
         pr.WaitForExit()
