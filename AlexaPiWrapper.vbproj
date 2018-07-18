@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{340D524B-19C7-4F26-ABEF-3E6BC56FC2D4}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>AlexaPiWrapper.Module1</StartupObject>
+    <StartupObject>AlexaPiWrapper.ConsoleContainer</StartupObject>
     <RootNamespace>AlexaPiWrapper</RootNamespace>
     <AssemblyName>AlexaPiWrapper</AssemblyName>
     <FileAlignment>512</FileAlignment>
@@ -92,22 +92,24 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.Designer.vb">
-      <DependentUpon>Form1.vb</DependentUpon>
+    <Compile Include="InstallForm.Designer.vb">
+      <DependentUpon>InstallForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Form1.vb">
+    <Compile Include="InstallForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Module1.vb" />
+    <Compile Include="AlexaPiMod.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
     </Compile>
-    <Compile Include="My Project\MDIParent1.Designer.vb">
-      <DependentUpon>MDIParent1.vb</DependentUpon>
+    <Compile Include="ConsoleContainer.Designer.vb">
+      <DependentUpon>ConsoleContainer.vb</DependentUpon>
     </Compile>
-    <Compile Include="My Project\MDIParent1.vb">
+    <Compile Include="ConsoleContainer.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
@@ -123,11 +125,11 @@
     <Compile Include="setborder.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.vb</DependentUpon>
+    <EmbeddedResource Include="InstallForm.resx">
+      <DependentUpon>InstallForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="My Project\MDIParent1.resx">
-      <DependentUpon>MDIParent1.vb</DependentUpon>
+    <EmbeddedResource Include="ConsoleContainer.resx">
+      <DependentUpon>ConsoleContainer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -137,6 +139,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="git.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -148,6 +153,9 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+    <None Include="Update.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

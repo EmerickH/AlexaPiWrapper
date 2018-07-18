@@ -1,5 +1,5 @@
 # AlexaPiWrapper
 
-Windows exe wrapper for [AlexaPi-Windows](https://github.com/alexa-pi/AlexaPi-Windows)
+Windows wrapper for [AlexaPi](https://github.com/alexa-pi/AlexaPi)
 
-**This repo is no more maintained since AlexaPi-Windows is fused with base AlexaPi: https://github.com/alexa-pi/AlexaPi**
+REQUIRED: [Git for Windows](https://gitforwindows.org/)

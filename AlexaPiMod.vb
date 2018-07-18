@@ -4,14 +4,13 @@ Imports System.Windows.Forms
 Imports System.Runtime.InteropServices
 Imports System.ComponentModel
 Imports System.IO
+Imports System.Net
+Imports System.Security.Cryptography.X509Certificates
 
-Module Module1
+Module AlexaPiMod
 
-    Public Const name = "AlexaPi-dev"
-    Public Const url = "https://github.com/alexa-pi/AlexaPi/archive/"
-    Public Const file = "dev.zip"
-    Public Const swigurl = "https://github.com/EmerickH/swigwin-AlexaPi/archive/"
-    Public Const swigfile = "master.zip"
+    Public Const name = "AlexaPi"
+    Public Const url = "https://github.com/alexa-pi/AlexaPi.git"
 
     <DllImport("kernel32.dll")>
     Private Function GetConsoleWindow() As IntPtr
@@ -42,6 +41,10 @@ Module Module1
 
     Dim consolehandle = 0
     Dim consoleid = 0
+    Dim ConsoleProc As Process
+
+    Public documentspath = My.Computer.FileSystem.SpecialDirectories.MyDocuments
+    Public alexapipath = documentspath & "\" & name
 
     WithEvents icon As New NotifyIcon()
     WithEvents menu As New ContextMenuStrip()
@@ -50,8 +53,8 @@ Module Module1
     WithEvents exit_menu As New ToolStripMenuItem("Exit")
     WithEvents show_menu As New ToolStripMenuItem("Show log")
     WithEvents restart_menu As New ToolStripMenuItem("Restart")
+    WithEvents update_menu As New ToolStripMenuItem("Update")
 
-    Dim window As New MDIParent1
     Public windowhandle = 0
 
     Public terminate As Boolean = False
@@ -67,51 +70,45 @@ Module Module1
         menu.Items.Add(show_menu)
         menu.Items.Add(restart_menu)
         menu.Items.Add(exit_menu)
+        menu.Items.Add(update_menu)
         icon.ContextMenuStrip = menu
 
         icon.Visible = True
         icon.ShowBalloonTip(1000)
 
-        If Directory.Exists(Application.StartupPath & "\" & name) Then
+        windowhandle = ConsoleContainer.Handle
+
+        If Directory.Exists(alexapipath) Then
             back.RunWorkerAsync()
-
-            window.Show()
-            windowhandle = window.Handle
+            'Application.Run()
         Else
-            Dim download As New Form1
-            download.ShowDialog()
+            ShowWindow(windowhandle, SW_HIDE)
+            InstallForm.ShowDialog()
         End If
-
-
-
-        Application.Run()
     End Sub
 
     Private Sub exit_menu_Click(sender As Object, e As EventArgs) Handles exit_menu.Click
-        stop_console()
-        terminate = True
-        Application.Exit()
+        stop_app()
     End Sub
 
     Private Sub show_menu_Click(sender As Object, e As EventArgs) Handles show_menu.Click
-        ShowWindow(window.Handle, SW_SHOW)
+        ShowWindow(windowhandle, SW_SHOW)
     End Sub
 
     Private Sub back_DoWork(sender As Object, e As DoWorkEventArgs) Handles back.DoWork
         Dim command = "python main.py -d"
-        Dim folder = Application.StartupPath & "\" & name & "\src\"
+        Dim folder = alexapipath & "\src\"
 
         Dim exitCode As Integer
         Dim ProcessInfo As ProcessStartInfo
-        Dim Proc As Process
 
         ProcessInfo = New ProcessStartInfo("cmd.exe", "/c " + command + " & pause")
         ProcessInfo.WorkingDirectory = folder
 
-        Proc = Process.Start(ProcessInfo)
+        ConsoleProc = Process.Start(ProcessInfo)
         Thread.Sleep(1000)
-        consolehandle = Proc.MainWindowHandle
-        consoleid = Proc.Id
+        consolehandle = ConsoleProc.MainWindowHandle
+        consoleid = ConsoleProc.Id
 
         SetParent(consolehandle, windowhandle)
 
@@ -121,23 +118,70 @@ Module Module1
         SendMessage(consolehandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0)
         ShowWindow(windowhandle, SW_HIDE)
 
-        Proc.WaitForExit()
+        ConsoleProc.WaitForExit()
 
-        exitCode = Proc.ExitCode
+        exitCode = ConsoleProc.ExitCode
 
-        'Console.WriteLine("ExitCode: " + exitCode.ToString(), "ExecuteCommand")
-        Proc.Close()
+        'Console.WriteLine("ExitCode:  " + exitCode.ToString(), "ExecuteCommand")
+        ConsoleProc.Close()
     End Sub
 
     Public Sub stop_console()
         Try
-            Process.GetProcessById(consoleid).Close()
+            ConsoleProc.Kill()
+            If Not ConsoleProc.HasExited Then
+                ConsoleProc.WaitForExit()
+            End If
         Catch ex As Exception
-
+            'MsgBox("Can't close AlexaPi: " & ex.Message, MsgBoxStyle.Critical)
         End Try
+    End Sub
+
+    Public Sub stop_app()
+        stop_console()
+        icon.BalloonTipText = "AlexaPi closed!"
+        icon.ShowBalloonTip(1000)
+        terminate = True
+        Thread.Sleep(1000)
+        icon.Visible = False
+        Application.Exit()
+    End Sub
+
+    Public Sub RestartElevated()
+        Dim startInfo As ProcessStartInfo = New ProcessStartInfo()
+        startInfo.UseShellExecute = True
+        startInfo.WorkingDirectory = Environment.CurrentDirectory
+        startInfo.FileName = Application.ExecutablePath
+        startInfo.Verb = "runas"
+        Try
+            Dim p As Process = Process.Start(startInfo)
+        Catch ex As Exception
+            Return 'If cancelled, do nothing
+        End Try
+        terminate = True
+        icon.Visible = False
+        Application.Exit()
     End Sub
 
     Private Sub restart_menu_Click(sender As Object, e As EventArgs) Handles restart_menu.Click
         Application.Restart()
     End Sub
+
+    Private Sub update_menu_Click(sender As Object, e As EventArgs) Handles update_menu.Click
+        Dim gitinfo As New ProcessStartInfo("cmd.exe", "/c ""Update.bat """ & alexapipath & " " & Application.StartupPath & """""")
+        'gitinfo.WorkingDirectory = alexapipath
+        Dim git = Process.Start(gitinfo)
+        stop_app()
+    End Sub
+
 End Module
+
+Class MyWebClient
+    Inherits WebClient
+
+    Protected Overrides Function GetWebRequest(ByVal address As Uri) As WebRequest
+        Dim request As HttpWebRequest = CType(MyBase.GetWebRequest(address), HttpWebRequest)
+        request.ClientCertificates.Add(New X509Certificate())
+        Return request
+    End Function
+End Class
